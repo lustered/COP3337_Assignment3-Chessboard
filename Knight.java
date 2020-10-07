@@ -1,3 +1,11 @@
+/*
+Carlos Luis
+U08
+Knight.java
+I affirm that this program is entirely my own work and none of it
+is the work of any other person.
+*/
+
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
@@ -20,18 +28,19 @@ public class Knight
      */
     public Knight()
     {
-        // Initialize Position at row 0 column 0
+        // Initialize Position at row 0 column 0.
         position = new Point(0, 0) ;
-        // Define Possible moves
+        // Define the moves the knight can make.
         moveTypes = new int[][] { {-1,-2,-2,-1 ,1, 2,2,1} ,
                                   {2, 1, -1,-2,-2,-1,1,2} };
 
         nextMovesAvailable = new ArrayList<Point>() ;
     }
+
     /**
      * Initialize an instance of a Knight with a defined position. 
      *
-     * @param position Where the knight will start.
+     * @param position {@link Point} where the knight will start.
      */
     public Knight(Point position)
     {
@@ -50,10 +59,10 @@ public class Knight
     }
 
     /**
-     * Helper Checks if the move type is legal and adds the position to possible moves.
+     * Checks if the move type is legal and adds the position to possible moves.
      *
      * @param board instance of {@link ChessBoard} to use within the method.
-     * @return True if the move is legal, else False.
+     * @return boolean true if the move is legal, else false.
      */
     public boolean canMove(ChessBoard board)
     {
@@ -88,6 +97,7 @@ public class Knight
      */
     public void move(ChessBoard board , int tourNumber)
     {
+        // Get the size of the legal moves
         int size = nextMovesAvailable.size();
         
         // First check if there were recorded possible moves.

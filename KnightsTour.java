@@ -1,3 +1,11 @@
+/*
+Carlos Luis
+U08
+KnightsTour.java
+I affirm that this program is entirely my own work and none of it
+is the work of any other person.
+*/
+
 import java.util.HashMap ; 
 import java.util.Map ; 
 // Needed in case we want to initialize the knight at a non-default position
@@ -82,22 +90,23 @@ public class KnightsTour
     public String bestTourResult()
     {
         int totalTours = 0 ; 
-        for(int c : tourRecords.values())
-            totalTours+=c ; 
+        for(int vals : tourRecords.values())
+            totalTours += vals ; 
 
         String divider = new String(new char[40]).replace("\0", "-") ; 
         String ret = "" ; 
 
         ret += String.format("\n\t::Best of %3s Tours::" , totalTours) ; 
         ret += (mostMoves == 64) ? " (a complete tour)\n" : "\n"  ; 
-        ret += String.format("\n%4sTour # %2s\t Tour Length: %2s"," ", tourNum, mostMoves)  ; 
+        ret += String.format("\n%4sTour # %2s\t Tour Length: %2s\n"," ", tourNum, mostMoves)  ; 
         ret += bestBoard.toString()  ; 
 
         // All the tour records
-        ret += String.format("\n%15s\t%20s\n" + divider, "Tour Length", "Num of Tours")  ; 
+        ret += String.format("\n%15s\t%20s\n%42s" ,"Tour Length", "Num of Tours", divider)  ; 
 
+        // Iterate over <Tour Length, Count>
         for(Map.Entry<Integer, Integer> tours : tourRecords.entrySet())
-            if(tours.getValue() != 0)
+            // if(tours.getValue() != 0)
                 ret += String.format("\n%10s%20s", tours.getKey(), tours.getValue())  ; 
 
         ret = String.format("%-100s" , ret) ; 

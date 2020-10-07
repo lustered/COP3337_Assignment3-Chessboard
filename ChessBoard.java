@@ -1,3 +1,11 @@
+/*
+Carlos Luis
+U08
+ChessBoard.java
+I affirm that this program is entirely my own work and none of it
+is the work of any other person.
+*/
+
 import java.awt.Point ; 
 
 /**
@@ -6,7 +14,7 @@ import java.awt.Point ;
  */
 public class ChessBoard
 {
-    // board to store our tours
+    // Board to store our tours.
     private int[][] board; 
 
     /**
@@ -20,7 +28,7 @@ public class ChessBoard
     /**
      * Check if the move is legal.
      *
-     * @param position Point position object with x,y positions.  
+     * @param position {@link Point} position object with x,y positions.  
      * @return boolean true if the move can be made, else false. 
      */
     public boolean moveIsLegal(Point position)
@@ -48,18 +56,18 @@ public class ChessBoard
     public String toString()
     {
         // divider for each row
-        String divider = new String(new char[40]).replace("\0", "-") ; 
+        String divider = new String(new char[41]).replace("\0", "-") ; 
+        String gridDivider = "\n\t" + divider + "\n\t"; 
 
         // String to concatenate board state
-        String boardState = "\n\n" + divider + "\n" ; 
+        String boardState = gridDivider + "|" ;
 
         // Iterate over rows and columns
         for(int i = 0 ; i < board.length ; i++)
         {
             for(int j = 0 ; j < board[i].length ; j++)
             {
-                // Append each element
-                
+                // Append each element.
                 // If the position was not reached during the tour.
                 if(board[i][j] == 0)
                     // Replace 0 with *
@@ -69,8 +77,9 @@ public class ChessBoard
                     boardState += String.format(" %2s |", board[i][j]); 
             }
            
-            // Start a new line every new row
-            boardState += "\n" + divider + "\n" ; 
+            // Start a new line every new row. Append a closing pipe unless
+            // it's the last line. Just 
+            boardState += (i < board.length - 1) ? gridDivider + "|" : gridDivider ; 
         }
 
         return boardState ; 

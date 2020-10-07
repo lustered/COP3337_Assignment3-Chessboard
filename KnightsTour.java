@@ -1,4 +1,7 @@
-import java.awt.Point; // To start the knight at a non-default position.
+import java.util.HashMap ; 
+import java.util.Map ; 
+// Needed in case we want to initialize the knight at a non-default position
+import java.awt.Point ; 
 
 /**
  * Conducts the Knight's Tour.  
@@ -6,91 +9,98 @@ import java.awt.Point; // To start the knight at a non-default position.
 public class KnightsTour
 {
     // Number of moves of the longest tour
-    private int bestTour ; 
+    private int mostMoves ; 
+    // To grab the best tour's board state
     private ChessBoard bestBoard ;  
-    private int[][] tourRecords  ; 
+    // Keep records of tour <length, count> for all tours ran
+    private HashMap<Integer, Integer> tourRecords  ; 
+    // Assign the best tour number
+    private int tourNum  ; 
+    // Keep a counter of how many tours are ran
+    private int tourIter ; 
 
     /**
      * Create a tour, initialize records table and best tour. 
      */
-    public KnightsTour(int tours)
-    {
-        tourRecords = new int[tours][64]  ; 
-        bestBoard = new ChessBoard() ; 
-        bestTour = 0  ; 
-    }
+    // public KnightsTour(int tours)
     public KnightsTour()
     {
-        // Set one tour as default for the noarg constructor
-        this(1);
+        // tourRecords = new int[tours][64]  ; 
+        // tourRecords = new int[64]  ; 
+        tourRecords = new HashMap<Integer, Integer>() ; 
+        bestBoard = new ChessBoard() ; 
+        mostMoves = 0  ; 
+        tourNum = 0  ; 
+        tourIter = 0 ; 
     }
-    
+        
     /**
      * Can conduct a tour, I.e, create ChessBoard and Knight objects, place the Knight
      * on the board, and have the Knight move until there are no more legal moves.
+     *
      */
-    public void conductTour(int tourNum)
+    public void conductTour()
     {
         // count variables
         int tourMoves = 1  ; 
+        tourIter++ ; 
 
-        // Reset board, needed in case multiple tours are ran.
+        // Create new board and knight, needed in case multiple tours are ran.
         ChessBoard board = new ChessBoard()  ; 
+        // Initialize the knight
+        // The knight has 2 constructors
+        //
+        // .noArg constructor will initialize the 
+        // knight at 0,0 on the board
+        //
+        // . Otherwise, pass a Point object with the initial position.
+        // Knight knight = new Knight(new Point(5,2))  ; 
         Knight knight = new Knight()  ; 
 
-        /* Set the knight at the initial position .
-        * The Knight's position is default to (0,0).
-        * If you want to start the knight at another position
-        * pass a Point object with the position.
-        *
-        * Eg. Point position = new Point(3,5) ;
-        * knight.move(board, position, tourMove)
-        */
-        knight.move(board, knight.getPosition(), 1) ; 
+        knight.move(board , 1) ; 
 
 
-        while(knight.canMove(board) && tourMoves < 64)
-        {
-            System.out.println(tourMoves);
-            knight.move(board, knight.getPosition(),++tourMoves)  ; 
-        }
+        while(knight.canMove(board) && tourMoves < 65)
+            knight.move(board, ++tourMoves)  ; 
         
         // Increase the tour's length count by 1 
-        tourRecords[tourMoves]++;
+        tourRecords.merge(tourMoves, 1, Integer::sum)  ; 
 
-        System.out.println("asdasdasd" + tourNum);
-        if(tourMoves > tourRecords[bestTour])
+        if(tourMoves > mostMoves)
         {
-            bestTour =  tourRecords[tourMoves] ;
+            tourNum = tourIter ; 
+            mostMoves =  tourMoves  ; 
             bestBoard = board ; 
-
         } 
-
-        tourMoves = 1 ;
-       
     }
+
+
+    /**
+     * 
+     * 
+     */
     public String bestTourResult()
     {
+        int totalTours = 0 ; 
+        for(int c : tourRecords.values())
+            totalTours+=c ; 
+
         String divider = new String(new char[40]).replace("\0", "-") ; 
         String ret = "" ; 
 
-        ret += String.format("%15s%2s\n" ,"Best Tour Moves: " , bestTour) ; 
-        // ret += "\tNumber of Moves: " + bestTour  ; 
+        ret += String.format("\n\t::Best of %3s Tours::" , totalTours) ; 
+        ret += (mostMoves == 64) ? " (a complete tour)\n" : "\n"  ; 
+        ret += String.format("\n%4sTour # %2s\t Tour Length: %2s"," ", tourNum, mostMoves)  ; 
+        ret += bestBoard.toString()  ; 
 
-        ret += bestTour == 63 ? " (a complete tour)\n" : "\n" ; 
-
-        
         // All the tour records
-        for(int i = 0 ; i < tourRecords.length ; i++)
-            if(tourRecords[i] != 0)
-                ret += String.format("Tour: %2s Moves: %2s\n", tourRecords[i], i) ;
-       
-        ret += bestBoard.toString();
+        ret += String.format("\n%15s\t%20s\n" + divider, "Tour Length", "Num of Tours")  ; 
 
-        // System.out.format("%15s%15s\n", "Moves", "Count");
-        ret += "\n\n" + divider ; 
+        for(Map.Entry<Integer, Integer> tours : tourRecords.entrySet())
+            if(tours.getValue() != 0)
+                ret += String.format("\n%10s%20s", tours.getKey(), tours.getValue())  ; 
 
+        ret = String.format("%-100s" , ret) ; 
         return ret ; 
     }
-    
 }

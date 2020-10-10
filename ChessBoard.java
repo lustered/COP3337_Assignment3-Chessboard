@@ -14,8 +14,8 @@ import java.awt.Point ;
  */
 public class ChessBoard
 {
-    // Board to store our tours.
-    private int[][] board; 
+    // Board to store our tours as the knight moves.
+    private int[][] board ; 
 
     /**
      * Creates an 8x8 board. 
@@ -33,7 +33,8 @@ public class ChessBoard
      */
     public boolean moveIsLegal(Point position)
     {
-
+        // All the elements of an int array are initialized to 0
+        // If the index is a default one, return true, else false.
         if(board[position.x][position.y] == 0)
             return true ; 
         else 
@@ -49,18 +50,40 @@ public class ChessBoard
     }
 
     /**
+     * Check if the position is one move away from the first tour.
+     * 
+     *
+     * @param pos {@link Point} position to check.
+     * @return {@link Boolean} true if position is one move away else false. 
+     */
+    public boolean oneMoveAway(Point pos)
+    {
+        try
+        {
+           if(board[pos.x][pos.y] == 1)
+               return true;
+        }
+        catch (ArrayIndexOutOfBoundsException exception)
+        {
+            return false;
+        }
+
+        return false;
+    }
+
+    /**
      * Return a String displaying the state of the board.  
      *
      * @return a String displaying the state of the board.
      */
     public String toString()
     {
-        // divider for each row
+        // dividers for each row
         String divider = new String(new char[41]).replace("\0", "-") ; 
         String gridDivider = "\n\t" + divider + "\n\t"; 
 
         // String to concatenate board state
-        String boardState = gridDivider + "|" ;
+        String boardState = gridDivider + "|" ; 
 
         // Iterate over rows and columns
         for(int i = 0 ; i < board.length ; i++)
@@ -71,10 +94,10 @@ public class ChessBoard
                 // If the position was not reached during the tour.
                 if(board[i][j] == 0)
                     // Replace 0 with *
-                    boardState += String.format(" %2s |", "*"); 
+                    boardState += String.format(" %2s |", "*") ; 
                 else
                     // Else just append the tour number
-                    boardState += String.format(" %2s |", board[i][j]); 
+                    boardState += String.format(" %2s |", board[i][j]) ; 
             }
            
             // Start a new line every new row. Append a closing pipe unless

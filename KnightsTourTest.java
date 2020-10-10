@@ -15,31 +15,29 @@ public class KnightsTourTest
     /**
      * Main driver.
      *
-     * @param args Args for runtime.
+     * @param args kargs to pass.
      */
     public static void main(String[] args) {
-        int runs = 100000 ;
         // Create tour.
         KnightsTour tour1 = new KnightsTour();
 
-        // Run it.
-        for(int i = 0 ; i < runs ; i++)
+        // Run n tours.
+        int n = 1000 ;
+        for(int i = 0 ; i < n ; i++)
             tour1.conductTour();
         
         // Print results
-        System.out.println(tour1.bestTourResult());
+        System.out.println(tour1);
         
         // Writing to file 
         try
         {
             PrintWriter output = new PrintWriter("TourResults.txt") ;
-            output.write(tour1.bestTourResult()) ;
+            output.write(tour1.toString()) ;
             output.close() ;
         }
         catch (Exception e) {
-            System.out.println("File error " + e);
+            System.out.println("File error: " + e);
         }
-
-
     }
 }
